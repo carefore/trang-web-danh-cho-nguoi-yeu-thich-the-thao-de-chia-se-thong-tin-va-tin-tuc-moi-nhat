@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sports News</title>
+    <style>
+        /* CSS để tạo giao diện */
+        /* Bổ sung phần CSS của bạn ở đây */
+    </style>
+</head>
+<body>
+    <h1>Sports News</h1>
+    <form id="newsForm" action="save_news.php" method="post">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br>
+        <label for="content">Content:</label><br>
+        <textarea id="content" name="content"></textarea><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Hiển thị tin tức đã lưu -->
+    <div id="newsList">
+        <!-- Dữ liệu tin tức sẽ được hiển thị ở đây -->
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Javascript và jQuery để tương tác với form và hiển thị dữ liệu
+        $(document).ready(function(){
+            // Xử lý submit form
+            $('#newsForm').submit(function(e){
+                e.preventDefault(); // Ngăn chặn form submit mặc định
+                var formData = $(this).serialize(); // Thu thập dữ liệu từ form
+
+                // Gửi dữ liệu đến PHP thông qua Ajax
+                $.ajax({
+                    url: 'save_news.php',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response){
+                        // Nếu thành công, làm gì đó nếu cần thiết (ví dụ: làm mới danh sách tin tức)
+                        // Đọc lại dữ liệu từ cơ sở dữ liệu và hiển thị tin tức mới
+                        fetchNews();
+                    }
+                });
+            });
+
+            // Hiển thị tin tức khi trang được tải
+            fetchNews();
+
+            // Hàm để lấy tin tức từ cơ sở dữ liệu và hiển thị
+            function fetchNews(){
+                $.ajax({
+                    url: 'get_news.php',
+                    type: 'GET',
+                    success: function(response){
+                        $('#newsList').html(response); // Hiển thị tin tức trong #newsList
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
